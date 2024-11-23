@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OnlineMoviesVN.DAL.Data;
+using OnlineMoviesVN.DAL.Repository;
+using OnlineMoviesVN.DAL.Repository.IRepository;
 using OnlineMoviesVN.Utility.Constant;
 using OnlineMoviesVN.Utility.Cookies;
 using OnlineMoviesVN.Utility.JwtAuthentication;
@@ -12,6 +15,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(
@@ -68,7 +72,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnChallenge = context =>
             {
                 Console.WriteLine("Chưa có user đăng nhập");
-                context.Response.Redirect("/Admin/Home/Login");
+                context.Response.Redirect("/Account/Login");
                 context.HandleResponse();
                 return Task.CompletedTask;
             },
@@ -94,10 +98,26 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+    ForwardedHeaders.XForwardedProto
+});
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value;
+
+    if (!string.IsNullOrEmpty(path) && !path.EndsWith("/") && !Path.HasExtension(path))
+    {
+        context.Response.Redirect($"{path}/", true); // Chuyển hướng 301
+        return;
+    }
+
+    await next();
+});
 
 app.UseRouting();
 app.UseSession();
@@ -116,10 +136,10 @@ app.UseStatusCodePages(async context =>
             response.Redirect("/");
         }
     }
-    //else if (response.StatusCode == 500)
-    //{
-    //    response.Redirect("/notfound");
-    //}
+    else if (response.StatusCode == 500)
+    {
+        response.Redirect("/notfound");
+    }
     await Task.CompletedTask;
 });
 
@@ -130,7 +150,13 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllerRoute(
+    name: "MyArea",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "NotFound",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Client}/{controller=Home}/{action=Index}/{id?}"
-);
+    pattern: "{area=Client}/{controller=Home}/{action=Index}/{id?}");
+
 app.Run();

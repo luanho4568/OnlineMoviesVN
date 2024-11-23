@@ -11,6 +11,7 @@
     <PackageReference Include="JWT" Version="10.1.1" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
@@ -21,9 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Account\ViewModels\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="wwwroot\Content\Admin\img\" />
+    <Folder Include="wwwroot\Content\Account\img\" />
+    <Folder Include="wwwroot\Content\Admin\" />
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 
