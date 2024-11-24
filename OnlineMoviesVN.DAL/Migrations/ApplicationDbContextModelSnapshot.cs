@@ -94,6 +94,9 @@ namespace OnlineMoviesVN.DAL.Migrations
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("LastLogout")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
@@ -117,48 +120,6 @@ namespace OnlineMoviesVN.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("OnlineMoviesVN.Database.Models.UserActivityLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ActivityType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IPAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserActivityLogs");
-                });
-
-            modelBuilder.Entity("OnlineMoviesVN.Database.Models.UserActivityLog", b =>
-                {
-                    b.HasOne("OnlineMoviesVN.Database.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -19,8 +19,8 @@
     }
     public static class UserStatusConstants
     {
-        public const bool Active = true;
-        public const bool Inactive = false;
+        public const bool Status = true;
+        public const bool InStatus = false;
     }
     public static class ApiEndpoints
     {

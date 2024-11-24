@@ -76,6 +76,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                 if (isPassword)
                 {
                     login.LastLogin = DateTime.Now;
+                    login.IsStatus = UserStatusConstants.Status;
                     await _unitOfWork.SaveAsync();
                     var token = _jwtService.GenerateToken(login);
                     Response.SetCookie(StorageConstants.KeyTokenCookie, token, expireTime);
@@ -94,7 +95,6 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                             Response.DeleteCookie(StorageConstants.KeyRememberCookie);
                         }
                     }
-                    TempData["Success"] = "Đăng nhập thành công!";
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
                 }
                 else
@@ -112,9 +112,18 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
         }
         public async Task<IActionResult> Logout()
         {
+            var user = HttpContext.Session.Get<User>(StorageConstants.KeySessionUser);
+            if (user != null)
+            {
+                user.LastLogout = DateTime.Now;
+                _unitOfWork.User.Update(user);
+                await _unitOfWork.SaveAsync();
+            }
             Response.DeleteCookie(StorageConstants.KeyTokenCookie);
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login", new { area = "Account" });
         }
+
+
     }
 }

@@ -121,11 +121,7 @@ namespace OnlineMoviesVN.Utility.JwtAuthentication
                 if (DateTime.UtcNow > expirationTime)
                 {
                     context.Response.DeleteCookie(StorageConstants.KeyTokenCookie);
-                    var sessionUser = context.Session.Get<User>(StorageConstants.KeySessionUser);
-                    if (sessionUser != null)
-                    {
-                        context.Session.RemoveSession(StorageConstants.KeySessionUser);
-                    }
+                    context.Session.Clear();
                     return false;
                 }
                 else

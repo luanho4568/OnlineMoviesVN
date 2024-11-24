@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,10 +9,12 @@ using OnlineMoviesVN.DAL.Repository.IRepository;
 using OnlineMoviesVN.Utility.Constant;
 using OnlineMoviesVN.Utility.Cookies;
 using OnlineMoviesVN.Utility.JwtAuthentication;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var configuration = builder.Configuration;
+var connectionString = configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<JwtService>();
@@ -31,7 +34,12 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -83,7 +91,42 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
 
         };
-    });
+    })
+
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+    })
+   .AddGoogle(googleOptions =>
+   {
+       googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+       googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+       googleOptions.CallbackPath = new PathString("/signin-google");
+       googleOptions.Events.OnTicketReceived = async context =>
+        {
+            // Lấy thông tin email từ Google
+            var email = context.Principal.FindFirstValue(ClaimTypes.Email);
+            // Xác thực trong cơ sở dữ liệu
+            var userRepo = context.HttpContext.RequestServices.GetService<IUnitOfWork>();
+            var user = await userRepo.User.GetFirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                context.Response.Redirect("/Account/Login");
+                context.HandleResponse();
+                return;
+            }
+
+            var identity = context.Principal.Identity as ClaimsIdentity;
+            identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+
+            // Lưu vào session hoặc cookie
+            var jwtService = context.HttpContext.RequestServices.GetService<JwtService>();
+            var token = jwtService.GenerateToken(user);
+            context.Response.SetCookie(StorageConstants.KeyTokenCookie, token, 7);
+        };
+   });
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
@@ -110,7 +153,7 @@ app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
 
-    if (!string.IsNullOrEmpty(path) && !path.EndsWith("/") && !Path.HasExtension(path))
+    if (!string.IsNullOrEmpty(path) && !path.EndsWith("/") && !Path.HasExtension(path) && !path.EndsWith("/signin-google"))
     {
         context.Response.Redirect($"{path}/", true); // Chuyển hướng 301
         return;

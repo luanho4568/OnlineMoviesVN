@@ -87,17 +87,17 @@
                             <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                         </div>
 
-                        <!-- Continue with Google -->
-                        <a class="btn btn-danger btn-lg btn-block" href="#!" role="button">
-                            <i class="fab fa-google me-2"></i>Đăng nhập bằng GOOGLE
-                        </a>
-
-                        <!-- Continue with Phone -->
-                        <a class="btn btn-info btn-lg btn-block" href="#!" role="button">
-                            <i class="fas fa-phone-alt me-2"></i>Đăng nhập bằng PHONE
-                        </a>
 
                     </form>
+                    <!-- Continue with Google -->
+                    <a class="btn btn-danger btn-lg btn-block" href="@Url.Action("LoginWithGoogle", "Google", new { area = "Account" })">
+                        <i class="fab fa-google me-2"></i>Đăng nhập bằng GOOGLE
+                    </a>
+
+                    <!-- Continue with Phone -->
+                    <a class="btn btn-info btn-lg btn-block" href="#!">
+                        <i class="fas fa-phone-alt me-2"></i>Đăng nhập bằng PHONE
+                    </a>
                     <div class="text-center mt-4">
                         <p>
                             Chưa có tài khoản? <a href="/account/register">Đăng ký ngay</a>

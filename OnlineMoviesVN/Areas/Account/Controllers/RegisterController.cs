@@ -33,7 +33,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                 string email = Request.Form["Email"];
                 string password = Request.Form["Password"];
                 string confirmPassword = Request.Form["ConfirmPassword"];
-                var user = await _unitOfWork.User.GetFirstOrDefaultAsync(x => x.Email == email);
+                var user = await _unitOfWork.User.GetFirstOrDefaultAsync(x => x.Email == email && x.AccountType == AccountTypeConstants.Local);
                 if (user != null)
                 {
                     TempData["Error"] = "Tài khoản này đã có người sử dụng";
