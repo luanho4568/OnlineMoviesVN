@@ -109,7 +109,7 @@ builder.Services.AddAuthentication(options =>
             var email = context.Principal.FindFirstValue(ClaimTypes.Email);
             // Xác thực trong cơ sở dữ liệu
             var userRepo = context.HttpContext.RequestServices.GetService<IUnitOfWork>();
-            var user = await userRepo.User.GetFirstOrDefaultAsync(u => u.Email == email);
+            var user = await userRepo.User.GetFirstOrDefaultAsync(u => u.Email == email && u.AccountType == AccountTypeConstants.Google);
 
             if (user == null)
             {
@@ -126,7 +126,19 @@ builder.Services.AddAuthentication(options =>
             var token = jwtService.GenerateToken(user);
             context.Response.SetCookie(StorageConstants.KeyTokenCookie, token, 7);
         };
+   })
+   .AddFacebook(facebookOptions =>
+   {
+       facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+       facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+       facebookOptions.CallbackPath = new PathString("/signin-facebook");
+       facebookOptions.Fields.Add("email");
+       facebookOptions.Fields.Add("name");
+       facebookOptions.Scope.Add("email");
+
    });
+
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
@@ -153,7 +165,7 @@ app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
 
-    if (!string.IsNullOrEmpty(path) && !path.EndsWith("/") && !Path.HasExtension(path) && !path.EndsWith("/signin-google"))
+    if (!string.IsNullOrEmpty(path) && !path.EndsWith("/") && !Path.HasExtension(path) && !path.EndsWith("/signin-google") && !path.EndsWith("/signin-facebook"))
     {
         context.Response.Redirect($"{path}/", true); // Chuyển hướng 301
         return;

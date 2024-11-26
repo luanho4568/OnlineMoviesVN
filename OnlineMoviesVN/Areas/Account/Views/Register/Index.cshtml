@@ -111,13 +111,11 @@
 
                         <!-- Continue with Google -->
                     </form>
+                    <a class="btn btn-primary btn-lg btn-block" href="@Url.Action("LoginWithFacebook", "Facebook", new { area = "Account" })">
+                        <i class="fab fa-facebook-f me-2"></i>Đăng nhập bằng FACEBOOK
+                    </a>
                     <a class="btn btn-danger btn-lg btn-block" href="@Url.Action("LoginWithGoogle", "Google", new { area = "Account" })">
                         <i class="fab fa-google me-2"></i>Đăng nhập bằng GOOGLE
-                    </a>
-
-                    <!-- Continue with Phone -->
-                    <a class="btn btn-info btn-lg btn-block" href="#!">
-                        <i class="fas fa-phone-alt me-2"></i>Đăng nhập bằng PHONE
                     </a>
                     <div class="text-center mt-4">
                         <p>

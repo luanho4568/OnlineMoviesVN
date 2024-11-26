@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineMoviesVN.Database.Models;
+using OnlineMoviesVN.Utility.Constant;
+using OnlineMoviesVN.Utility.Sessions;
 using System.Diagnostics;
 
 namespace OnlineMoviesVN.Areas.Client.Controllers
@@ -18,6 +20,8 @@ namespace OnlineMoviesVN.Areas.Client.Controllers
 
         public IActionResult Index()
         {
+            var user = HttpContext.Session.Get<User>(StorageConstants.KeySessionUser);
+            ViewBag.user = user;
             return View();
         }
 

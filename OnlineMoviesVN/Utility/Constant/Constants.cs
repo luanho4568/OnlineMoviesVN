@@ -15,7 +15,7 @@
     {
         public const string Local = "LOCAL";
         public const string Google = "GOOGLE";
-        public const string Phone = "PHONE";
+        public const string Facebook = "FACEBOOK";
     }
     public static class UserStatusConstants
     {
