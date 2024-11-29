@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
     <!-- MDB -->
     <link rel="stylesheet" href="~/Content/account/css/bootstrap-login-form.min.css" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
 </head>
 
 <body style="background-color: #f4f7fa;">
@@ -47,7 +48,11 @@
     </style>
 
     <partial name="_Notifycation" />
-
+    <div class="cs-page-loading active">
+        <div class="cs-page-loading-inner">
+            <div class="cs-page-spinner"></div>
+        </div>
+    </div>
     <section class="vh-100">
         <div class="container py-5 h-100">
             <div class="row d-flex align-items-center justify-content-center h-100">
@@ -109,6 +114,7 @@
     <!-- MDB -->
     <script type="text/javascript" src="~/Content/account/js/mdb.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Custom scripts -->
     <script type="text/javascript">
         $(document).ready(function () {
