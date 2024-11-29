@@ -1,0 +1,321 @@
+﻿@using OnlineMoviesVN.Utility.Constant
+@using OnlineMoviesVN.Database.Models;
+@using OnlineMoviesVN.Utility.Sessions;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor context
+
+@{
+    var checkUser = context?.HttpContext?.Session.Get<User>(StorageConstants.KeySessionUser);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@ViewData["Title"]</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon" asp-append-version="true">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon" asp-append-version="true">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Nunito|Poppins" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/assets/css/style.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <span class="d-none d-lg-block">Trang Quản Trị</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div>
+
+        <nav class="header-nav ms-auto">
+            <div id="google_translate_element" class="d-none"></div>
+            <ul class="d-flex align-items-center">
+                <!-- Dropdown ngôn ngữ -->
+                <li>
+                    <div class="header-items header-contact">
+                        <div class="pull-right">
+                            <div id="google_translate_element" style="margin:3px;display:none"></div>
+                        </div>
+                        <div class="pull-right language-bg">
+                            <div class="dropdown notranslate" style="margin-right: 10px;">
+                                <div class="warp-llg d-flex " style="align-items:center; gap:4px;">
+                                    <a class="dropdown-lgg" data-toggle="dropdown" aria-expanded="false" style="cursor: pointer; color: #000">
+                                        <div class="lang_show " data-lang="vi" style="color: #000">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/1200px-Flag_of_Vietnam.svg.png" alt="Vietnamese" class="lang-icon">
+                                            Tiếng Việt
+                                        </div>
+                                        <div class="lang_show " data-lang="en" style="display: none; color: #000">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/1200px-Flag_of_the_United_States.svg.png" alt="English" class="lang-icon">
+                                            English
+                                        </div>
+                                    </a>
+                                    <i class="fa fa-angle-down"></i>
+                                </div>
+
+                                <div class="dropdown-menu translation-links" aria-labelledby="dropdownMenu1">
+                                    <a class="dropdown-item lang-select" onclick="changelang('vi')" style="cursor: pointer; color: #000">
+                                        <!-- Icon Quốc kỳ Việt Nam (hình tròn) -->
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/1200px-Flag_of_Vietnam.svg.png" alt="Vietnamese" class="lang-icon">
+                                        Tiếng Việt
+                                    </a>
+                                    <a class="dropdown-item lang-select" onclick="changelang('en')" style="cursor:pointer;color:#000">
+                                        <!-- Icon Quốc kỳ Mỹ (hình tròn) -->
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/1200px-Flag_of_the_United_States.svg.png" alt="English" class="lang-icon">
+                                        English
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-primary badge-number">0</span>
+                    </a><!-- End Notification Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                            Bạn có 0 thông báo
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Xem tất cả</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item">
+                            <i class="bi bi-exclamation-circle text-warning"></i>
+                            <div>
+                                <h4>Lorem Ipsum</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>30 min. ago</p>
+                            </div>
+                        </li>
+
+                    </ul><!-- End Notification Dropdown Items -->
+
+                </li><!-- End Notification Nav -->
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="badge bg-success badge-number">0</span>
+                    </a><!-- End Messages Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        <li class="dropdown-header">
+                            You have 0 new messages
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="~/assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>Maria Hudson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>4 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                    </ul>
+
+                </li>
+                <li class="nav-item dropdown pe-3">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        @if (checkUser?.Avatar == null)
+                        {
+                            <img src="~/assets/img/no-image.jpg" alt="Profile" class="rounded-circle">
+                        }
+                        else
+                        {
+                            <img src="@checkUser?.Avatar" alt="Profile" class="rounded-circle">
+                        }
+                        <span class="d-none d-md-block dropdown-toggle ps-2">@checkUser?.FullName</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>@checkUser?.FullName</h6>
+                            <span>@checkUser?.Role</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                <i class="bi bi-person"></i>
+                                <span>Hồ sơ cá nhân</span>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Đăng xuất</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <!-- Trang chủ -->
+            <li class="nav-item">
+                <a class="nav-link " href="/admin">
+                    <i class="bi bi-grid"></i>
+                    <span>Trang chủ</span>
+                </a>
+            </li>
+
+            <!-- Quản lý phim -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#movies-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-film"></i>
+                    <span>Quản lý phim</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="movies-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/admin/movies/create">
+                            <i class="bi bi-circle"></i>
+                            <span>Thêm mới phim</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/movies">
+                            <i class="bi bi-circle"></i>
+                            <span>Danh sách phim</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Quản lý thể loại -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/categories">
+                    <i class="bi bi-tags"></i>
+                    <span>Quản lý thể loại</span>
+                </a>
+            </li>
+
+            <!-- Quản lý người dùng -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#users-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i>
+                    <span>Quản lý người dùng</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="users-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/admin/users">
+                            <i class="bi bi-circle"></i>
+                            <span>Danh sách người dùng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/users/blocked">
+                            <i class="bi bi-circle"></i>
+                            <span>Người dùng bị khóa</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Quản lý bình luận -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/comments">
+                    <i class="bi bi-chat-dots"></i>
+                    <span>Quản lý bình luận</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/support">
+                    <i class="bi bi-envelope"></i>
+                    <span>Hỗ trợ người dùng</span>
+                </a>
+            </li>
+            <!-- Thống kê -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/statistics">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Thống kê</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/schedule">
+                    <i class="bi bi-calendar"></i>
+                    <span>Lịch chiếu phim</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/settings">
+                    <i class="bi bi-gear"></i>
+                    <span>Cấu hình hệ thống</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <h1>@ViewData["Title"]</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin">@ViewData["PageTitle"]</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+            </nav>
+        </div>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; 2024 <strong><span>Movies Admin</span></strong>. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+    <!-- Vendor JS Files -->
+    <!-- Thêm Jquery từ CDN -->
+    <!-- Remove integrity and crossorigin attributes -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/jquery.cookie.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/assets/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

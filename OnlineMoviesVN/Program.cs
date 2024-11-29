@@ -170,7 +170,6 @@ app.Use(async (context, next) =>
         context.Response.Redirect($"{path}/", true); // Chuyển hướng 301
         return;
     }
-
     await next();
 });
 
