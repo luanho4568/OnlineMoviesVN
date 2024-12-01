@@ -11,7 +11,8 @@
     <!-- MDB -->
     <link rel="stylesheet" href="~/Content/account/css/bootstrap-login-form.min.css" />
     <link href="~/css/site.css" rel="stylesheet" asp-append-version="true"/>
-
+    <link href="~/css/GoogleTranslate/translate.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/Loadding/Loadding.css" rel="stylesheet" asp-append-version="true" />
 </head>
 
 <body style="background-color: #f4f7fa">
@@ -59,6 +60,7 @@
                          alt="Phone image" />
                 </div>
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 login-container">
+                    <partial name="_Translate" />
                     <h3 class="text-center">Đăng ký tài khoản</h3>
                     <form action="RegisterSubmit/" method="post">
                         @Html.AntiForgeryToken()
@@ -136,7 +138,12 @@
     <!-- MDB -->
     <script type="text/javascript" src="~/Content/account/js/mdb.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/jquery.cookie.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/googletranslate/translate.js" asp-append-version="true"></script>
+    <script src="~/js/Loadding/Loadding.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <!-- JavaScript for toggling password visibility -->
     <script type="text/javascript">
         $(document).ready(function () {

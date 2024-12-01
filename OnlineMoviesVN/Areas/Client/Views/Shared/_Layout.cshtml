@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="~/OnlineMoviesVN.styles.css" asp-append-version="true" />
 </head>
 <body>
+    <div class="cs-page-loading active">
+        <div class="cs-page-loading-inner">
+            <div class="cs-page-spinner"></div>
+        </div>
+    </div>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -41,9 +46,14 @@
             &copy; 2024 - OnlineMoviesVN - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/jquery.cookie.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/googletranslate/translate.js" asp-append-version="true"></script>
+    <script src="~/js/Loadding/Loadding.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

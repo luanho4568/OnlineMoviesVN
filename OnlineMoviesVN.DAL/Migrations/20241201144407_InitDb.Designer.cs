@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineMoviesVN.DAL.Data;
 
@@ -11,9 +12,11 @@ using OnlineMoviesVN.DAL.Data;
 namespace OnlineMoviesVN.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241201144407_InitDb")]
+    partial class InitDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,7 +137,7 @@ namespace OnlineMoviesVN.DAL.Migrations
                     b.Property<string>("Actors")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Category")
+                    b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("ChieuRap")
@@ -143,7 +146,7 @@ namespace OnlineMoviesVN.DAL.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("CountryId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")

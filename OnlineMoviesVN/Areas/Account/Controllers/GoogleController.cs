@@ -54,6 +54,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                 {
                     Email = email,
                     FullName = fullName,
+                    IsStatus = UserStatusConstants.Status,
                     Role = RoleConstants.Member,
                     AccountType = AccountTypeConstants.Google,
                     LastLogin = DateTime.Now

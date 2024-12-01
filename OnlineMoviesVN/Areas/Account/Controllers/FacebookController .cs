@@ -60,6 +60,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                     Email = email,
                     FullName = fullName,
                     Role = RoleConstants.Member,
+                    IsStatus = UserStatusConstants.Status,
                     AccountType = AccountTypeConstants.Facebook,
                     LastLogin = DateTime.Now
                 };

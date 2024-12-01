@@ -26,8 +26,11 @@
   <ItemGroup>
     <Folder Include="Areas\Account\ViewModels\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Client\API\" />
+    <Folder Include="Areas\Client\Models\DTO\" />
     <Folder Include="wwwroot\Content\Account\img\" />
     <Folder Include="wwwroot\Content\Admin\" />
+    <Folder Include="wwwroot\Content\Client\js\" />
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 

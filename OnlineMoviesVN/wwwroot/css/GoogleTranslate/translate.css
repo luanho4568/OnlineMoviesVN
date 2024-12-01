@@ -1,0 +1,18 @@
+﻿.lang-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; /* Tạo hiệu ứng tròn */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
+}
+
+.open > .dropdown-menu {
+    display: block;
+}
+
+.notranslate .dropdown-menu {
+    min-width: 100%;
+}
+
+.skiptranslate {
+    display: none;
+}

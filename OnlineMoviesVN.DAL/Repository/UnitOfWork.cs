@@ -12,6 +12,7 @@ namespace OnlineMoviesVN.DAL.Repository
 
         public IContactUsRequestRepository ContactUsRequest { get; private set; }
 
+        public IMovieRepository Movie { get; private set; }
 
         private readonly ApplicationDbContext _db;
         public UnitOfWork(ApplicationDbContext db)
@@ -19,6 +20,7 @@ namespace OnlineMoviesVN.DAL.Repository
             _db = db;
             User = new UserRepository(_db);
             ContactUsRequest = new ContactUsRequestRepository(_db);
+            Movie = new MovieRepository(_db);
         }
 
 

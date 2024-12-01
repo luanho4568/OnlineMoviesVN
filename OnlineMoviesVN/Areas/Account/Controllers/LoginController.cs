@@ -112,18 +112,21 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
         }
         public async Task<IActionResult> Logout()
         {
-            var user = HttpContext.Session.Get<User>(StorageConstants.KeySessionUser);
-            if (user != null)
+            var sessionUser = HttpContext.Session.Get<User>(StorageConstants.KeySessionUser);
+            if (sessionUser != null)
             {
-                user.LastLogout = DateTime.Now;
-                _unitOfWork.User.Update(user);
-                await _unitOfWork.SaveAsync();
+                var user = await _unitOfWork.User.GetFirstOrDefaultAsync(x => x.Id == sessionUser.Id);
+                if (user != null)
+                {
+                    user.LastLogout = DateTime.Now;
+                    user.IsStatus = UserStatusConstants.InStatus;
+                    _unitOfWork.User.Update(user);
+                    await _unitOfWork.SaveAsync();
+                }
             }
             Response.DeleteCookie(StorageConstants.KeyTokenCookie);
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login", new { area = "Account" });
         }
-
-
     }
 }

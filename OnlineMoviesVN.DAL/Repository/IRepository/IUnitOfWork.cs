@@ -5,6 +5,7 @@ namespace OnlineMoviesVN.DAL.Repository.IRepository
     {
         IUserRepository User { get; }
         IContactUsRequestRepository ContactUsRequest { get; }
+        IMovieRepository Movie { get; }
         Task SaveAsync();
     }
 }

@@ -9,7 +9,13 @@ namespace OnlineMoviesVN.DAL.Data
         {
 
         }
+
+        // Các DbSet cho các bảng trong cơ sở dữ liệu
         public DbSet<User> Users { get; set; }
         public DbSet<ContactUsRequest> ContactUsRequest { get; set; }
+        public DbSet<Movies> Movies { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Episodes> Episodes { get; set; }
     }
 }
