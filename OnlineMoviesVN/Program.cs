@@ -3,13 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using OnlineMoviesVN.DAL.Data;
-using OnlineMoviesVN.DAL.Repository;
-using OnlineMoviesVN.DAL.Repository.IRepository;
+using OnlineMoviesVN.Areas.Account.Service;
 using OnlineMoviesVN.Utility.Constant;
 using OnlineMoviesVN.Utility.Cookies;
 using OnlineMoviesVN.Utility.JwtAuthentication;
-using System.Security.Claims;
+using OnlineMoviesVN.Utility.ProgramSupport;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,14 +15,10 @@ var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<JwtService>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+ProgramSupport.ProgramBuildAddScoped(builder);
 
 
-builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
@@ -105,26 +99,8 @@ builder.Services.AddAuthentication(options =>
        googleOptions.CallbackPath = new PathString("/signin-google");
        googleOptions.Events.OnTicketReceived = async context =>
         {
-            // Lấy thông tin email từ Google
-            var email = context.Principal.FindFirstValue(ClaimTypes.Email);
-            // Xác thực trong cơ sở dữ liệu
-            var userRepo = context.HttpContext.RequestServices.GetService<IUnitOfWork>();
-            var user = await userRepo.User.GetFirstOrDefaultAsync(u => u.Email == email && u.AccountType == AccountTypeConstants.Google);
-
-            if (user == null)
-            {
-                context.Response.Redirect("/Account/Login");
-                context.HandleResponse();
-                return;
-            }
-
-            var identity = context.Principal.Identity as ClaimsIdentity;
-            identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
-
-            // Lưu vào session hoặc cookie
-            var jwtService = context.HttpContext.RequestServices.GetService<JwtService>();
-            var token = jwtService.GenerateToken(user);
-            context.Response.SetCookie(StorageConstants.KeyTokenCookie, token, 7);
+            var googleService = context.HttpContext.RequestServices.GetService<GoogleService>();
+            await googleService.LoginGoogleService(context.Principal, context.HttpContext);
         };
    })
    .AddFacebook(facebookOptions =>
@@ -167,7 +143,7 @@ app.Use(async (context, next) =>
 
     if (!string.IsNullOrEmpty(path) && !path.EndsWith("/") && !Path.HasExtension(path) && !path.EndsWith("/signin-google") && !path.EndsWith("/signin-facebook"))
     {
-        context.Response.Redirect($"{path}/", true); // Chuyển hướng 301
+        context.Response.Redirect($"{path}/", true);
         return;
     }
     await next();
@@ -180,15 +156,8 @@ app.UseStatusCodePages(async context =>
     var response = context.HttpContext.Response;
     if (response.StatusCode == 403 || response.StatusCode == 404)
     {
-        var requestPath = context.HttpContext.Request.Path.Value?.ToLower();
-        var routeData = context.HttpContext.GetRouteData();
 
-        if (routeData?.Values?.Count > 0 && routeData.Values.ContainsKey("controller") && routeData.Values.ContainsKey("action"))
-        {
-            // Nếu không có controller hoặc action trong route, có thể là tệp tĩnh, bỏ qua chuyển hướng
-            // Thực hiện chuyển hướng về trang chủ
-            response.Redirect("/");
-        }
+        response.Redirect("/");
     }
     else if (response.StatusCode == 500)
     {
@@ -200,17 +169,8 @@ app.UseStatusCodePages(async context =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-
-
 app.MapRazorPages();
-app.MapControllerRoute(
-    name: "MyArea",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-app.MapControllerRoute(
-    name: "NotFound",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{area=Client}/{controller=Home}/{action=Index}/{id?}");
+// hàm lưu trữ route của programs
+ProgramSupport.ProgramRouteSp(app);
 
 app.Run();

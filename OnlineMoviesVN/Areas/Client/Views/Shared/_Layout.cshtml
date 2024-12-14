@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnlineMoviesVN.styles.css" asp-append-version="true" />
+    <link href="~/css/Loadding/Loadding.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <div class="cs-page-loading active">
         <div class="cs-page-loading-inner">
-            <div class="cs-page-spinner"></div>
+            <div class="loader"></div> <!-- Thay thế cs-page-spinner bằng loader mới -->
         </div>
     </div>
     <header>
@@ -54,6 +55,13 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/googletranslate/translate.js" asp-append-version="true"></script>
     <script src="~/js/Loadding/Loadding.js" asp-append-version="true"></script>
+    <script>
+        // Đảm bảo loader sẽ ẩn khi trang tải xong
+        window.onload = function () {
+            var preloader = document.querySelector('.cs-page-loading');
+            preloader.classList.remove('active');
+        };
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

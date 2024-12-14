@@ -35,6 +35,5 @@ namespace OnlineMoviesVN.Database.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? LastLogin { get; set; }
         public DateTime? LastLogout { get; set; }
-
     }
 }

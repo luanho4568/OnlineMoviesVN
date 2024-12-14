@@ -5,8 +5,7 @@ namespace OnlineMoviesVN.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "ADMIN, MANAGER")]
-
-    public class HomeController : Controller
+    public class MoviesController : Controller
     {
         public IActionResult Index()
         {

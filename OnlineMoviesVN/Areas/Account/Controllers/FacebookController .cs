@@ -59,7 +59,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                 {
                     Email = email,
                     FullName = fullName,
-                    Role = RoleConstants.Member,
+                    Role = RoleConstants.Customer,
                     IsStatus = UserStatusConstants.Status,
                     AccountType = AccountTypeConstants.Facebook,
                     LastLogin = DateTime.Now
@@ -75,7 +75,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
             HttpContext.Session.Set(StorageConstants.KeySessionUser, user);
             var token = _jwtService.GenerateToken(user);
             HttpContext.Response.SetCookie(StorageConstants.KeyTokenCookie, token, 7);
-            return RedirectToAction("Index", "Home", new { area = "Client" });
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<OnlineMoviesVN.Database.Models.User>
+
+@{
+    ViewData["PageTitle"] = "Người dùng";
+    ViewData["Title"] = "Danh sách người dùng";
+    ViewData["Url"] = "/admin/users";
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Thông tin</th>
+            <th>Tài khoản</th>
+            <th>Liên hệ</th>
+            <th>Trạng thái</th>
+            <th>Hoạt động</th>
+            <th>Nhật ký</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="user-table">
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/Content/Admin/User/Index.js" asp-append-version="true"></script>
+}

@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineMoviesVN.DAL.Repository.IRepository;
-using OnlineMoviesVN.Database.Models;
-using OnlineMoviesVN.Utility.Constant;
 using OnlineMoviesVN.Utility.JwtAuthentication;
-using OnlineMoviesVN.Utility.Sessions;
 
 namespace OnlineMoviesVN.Areas.Account.Controllers
 {
@@ -40,34 +37,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                 TempData["Error"] = "Đăng nhập Google thất bại!";
                 return RedirectToAction("Index", "Login", new { area = "Account" });
             }
-            var email = authenticateResult.Principal.FindFirst(x => x.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
-            var fullName = authenticateResult.Principal.FindFirst(x => x.Type == System.Security.Claims.ClaimTypes.Name)?.Value;
-            if (string.IsNullOrEmpty(email))
-            {
-                TempData["Error"] = "Không thể lấy thông tin email từ tài khoản Google.";
-                return RedirectToAction("Index", "Login", new { area = "Account" });
-            }
-            var user = await _unitOfWork.User.GetFirstOrDefaultAsync(x => x.Email == email && x.AccountType == AccountTypeConstants.Google);
-            if (user == null)
-            {
-                user = new User
-                {
-                    Email = email,
-                    FullName = fullName,
-                    IsStatus = UserStatusConstants.Status,
-                    Role = RoleConstants.Member,
-                    AccountType = AccountTypeConstants.Google,
-                    LastLogin = DateTime.Now
-                };
-                await _unitOfWork.User.AddAsync(user);
-            }
-            else
-            {
-                user.LastLogin = DateTime.Now;
-            }
-            await _unitOfWork.SaveAsync();
-            HttpContext.Session.Set(StorageConstants.KeySessionUser, user);
-            return RedirectToAction("Index", "Home", new { area = "Client" });
+            return RedirectToAction("Index", "Home");
         }
     }
 }

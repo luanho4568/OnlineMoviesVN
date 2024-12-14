@@ -1,0 +1,48 @@
+﻿@using OnlineMoviesVN.Utility.Constant
+@model IEnumerable<OnlineMoviesVN.Database.Models.User>
+
+@foreach (var user in Model)
+{
+    <tr>
+        <td>
+            <span class="fw-bold text-primary">@user.FullName</span><br />
+            <span class="text-muted">@user.Gender</span><br />
+            <span class="text-secondary">@user.DateOfBirth?.ToString("dd/MM/yyyy")</span>
+        </td>
+        <td>
+            <span class="text-info">@user.Email</span><br />
+            <span class="text-success">@user.AccountType</span><br />
+            <span class="fw-bold text-danger">@user.Role</span>
+        </td>
+        <td>
+            <span class="text-dark">@user.PhoneNumber</span>
+        </td>
+        <td>
+            <strong>Trạng thái:</strong>
+            <span class="@(user.IsStatus == true ? "text-success fw-bold" : "text-danger fw-bold") btn-sm">
+                @(user.IsStatus == true ? "Đang hoạt động" : "Đang ngoại tuyến")
+            </span><br />
+            <strong>Kích hoạt:</strong>
+            <span class="@(user.IsActive == true ? "text-success fw-bold" : "text-danger fw-bold") btn-sm">
+                @(user.IsActive == true ? "Đã kích hoạt" : "Chưa kích hoạt")
+            </span>
+        </td>
+        <td>
+            <strong>Ngày tạo:</strong>
+            <span class="text-secondary">@user.CreatedAt?.ToString("dd/MM/yyyy HH:mm:ss")</span><br />
+            <strong>Ngày cập nhật:</strong>
+            <span class="text-secondary">@user.UpdatedAt?.ToString("dd/MM/yyyy HH:mm:ss")</span>
+        </td>
+        <td>
+            <strong>Đăng nhập lần cuối:</strong>
+            <span class="text-secondary">@user.LastLogin?.ToString("dd/MM/yyyy HH:mm:ss")</span><br />
+            <strong>Đăng xuất lần cuối:</strong>
+            <span class="text-secondary">@user.LastLogout?.ToString("dd/MM/yyyy HH:mm:ss")</span>
+        </td>
+        <td>
+            <button class="btn btn-dark @(user.AccountType != AccountTypeConstants.Local ? "disabled" : string.Empty)"><i class="fa-solid fa-lock"></i></button>
+            <button class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+        </td>
+    </tr>
+}

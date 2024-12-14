@@ -57,7 +57,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                     Email = email,
                     Password = hashedPassword,
                     AccountType = AccountTypeConstants.Local,
-                    Role = RoleConstants.Member,
+                    Role = RoleConstants.Customer,
                 };
                 await _unitOfWork.User.AddAsync(newUser);
                 await _unitOfWork.SaveAsync();

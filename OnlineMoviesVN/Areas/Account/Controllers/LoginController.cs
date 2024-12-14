@@ -95,7 +95,7 @@ namespace OnlineMoviesVN.Areas.Account.Controllers
                             Response.DeleteCookie(StorageConstants.KeyRememberCookie);
                         }
                     }
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Inner.Libs.v2" Version="1.0.4.1" />
     <PackageReference Include="JWT" Version="10.1.1" />
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.11" />
@@ -29,8 +30,7 @@
     <Folder Include="Areas\Client\API\" />
     <Folder Include="Areas\Client\Models\DTO\" />
     <Folder Include="wwwroot\Content\Account\img\" />
-    <Folder Include="wwwroot\Content\Admin\" />
-    <Folder Include="wwwroot\Content\Client\js\" />
+    <Folder Include="wwwroot\Content\Client\" />
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 
